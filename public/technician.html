@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ELOANCE | Technician Portal & GPS Live Share</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root { --primary-gold: #D4AF37; --neon-cyan: #06B6D4; --dark-950: #050811; --glass-bg: rgba(19, 27, 46, 0.85); --glass-border: rgba(212, 175, 55, 0.28); }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--dark-950); color: #fff; margin: 0; padding: 20px; }
+    .container { max-width: 1000px; margin: 0 auto; }
+    .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); padding-bottom: 15px; }
+    .card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 24px; margin-top: 20px; backdrop-filter: blur(16px); }
+    .btn { background: var(--neon-cyan); color: #050811; padding: 12px 24px; border-radius: 10px; font-weight: bold; border: none; cursor: pointer; }
+    .btn-green { background: #10B981; color: #fff; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2><i class="fa-solid fa-motorcycle" style="color:var(--neon-cyan);"></i> ELOANCE Technician Portal</h2>
+      <div><span style="color:#10B981;"><i class="fa-solid fa-circle"></i> Online & Active</span> | <a href="/" style="color:var(--primary-gold); margin-left:15px;">Home</a></div>
+    </div>
+
+    <div class="card">
+      <h3><i class="fa-solid fa-clipboard-list" style="color:var(--primary-gold);"></i> Assigned Job: Ticket #EL12345</h3>
+      <p><b>Customer:</b> Rahul Sharma | <b>Service:</b> 20-Min Doorstep Repair</p>
+      <div style="margin-top:20px;">
+        <button class="btn btn-green" onclick="startNavigation()"><i class="fa-solid fa-location-arrow"></i> Start Navigation / On The Way</button>
+      </div>
+      <p id="gps-status" style="margin-top:15px; color:var(--neon-cyan); font-size:13px;"></p>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    function startNavigation() {
+      alert('GPS Navigation Started! Broadcasting live telemetry.');
+      document.getElementById('gps-status').innerText = '📡 Broadcasting live GPS coordinates...';
+      let lat = 28.6139, lng = 77.2090;
+      setInterval(() => {
+        lat += 0.0004; lng += 0.0004;
+        socket.emit('update_technician_location', { technician_id: 't1', latitude: lat, longitude: lng, job_id: 'EL12345', status: 'On The Way' });
+        document.getElementById('gps-status').innerText = `📡 Live Broadcast Active -> Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`;
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
