@@ -13,7 +13,7 @@ const io = new Server(server);
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Database Connection
+// Database Connection & Secrets
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/eloance';
 const JWT_SECRET = process.env.JWT_SECRET || 'eloance_super_secret_key_2026';
 
@@ -21,34 +21,62 @@ mongoose.connect(MONGO_URI)
   .then(() => console.log('Connected to MongoDB Atlas successfully'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-// Mongoose Schemas & Models
+// --- MONGODB SCHEMAS ---
+const productSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  category: { type: String, required: true },
+  price: { type: Number, required: true },
+  original_price: { type: Number },
+  image_url: { type: String, required: true },
+  description: { type: String },
+  badge: { type: String }
+}, { timestamps: true });
+
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  phone: { type: String, required: true },
+  phone: { type: String },
   password_hash: { type: String, required: true },
   role: { type: String, enum: ['user', 'technician', 'admin'], default: 'user' },
   approval_status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
+  skills: [String],
+  experience: String,
+  service_area: String,
+  vehicle_number: String,
+  cv_filename: String
 }, { timestamps: true });
 
 const serviceRequestSchema = new mongoose.Schema({
   ticket_number: { type: String, required: true, unique: true },
   user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   service_type: { type: String, required: true },
+  category_detail: { type: String, required: true },
   device_details: { type: String, required: true },
   problem_description: { type: String, required: true },
-  customer_latitude: { type: Number },
-  customer_longitude: { type: Number },
-  customer_address: { type: String },
+  customer_address: String,
   status: { type: String, default: 'New' },
   assigned_technician_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
-  eta_minutes: { type: Number, default: 15 }
+  payment_status: { type: String, enum: ['Pending', 'Paid'], default: 'Pending' },
+  payment_amount: { type: Number, default: 49 },
+  eta_minutes: { type: Number, default: 20 }
 }, { timestamps: true });
 
+const Product = mongoose.model('Product', productSchema);
 const User = mongoose.model('User', userSchema);
 const ServiceRequest = mongoose.model('ServiceRequest', serviceRequestSchema);
 
-// Middleware for JWT Authentication
+// Seed initial products if collection is empty
+Product.countDocuments().then(count => {
+  if (count === 0) {
+    Product.insertMany([
+      { title: "MacBook Pro M1 (Refurbished A+)", category: "Refurbished", price: 699, original_price: 999, image_url: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500", description: "16GB RAM, 512GB SSD, flawless retina display.", badge: "Best Seller" },
+      { title: "High-Speed 1TB NVMe SSD Upgrade", category: "Festival Offer", price: 89, original_price: 149, image_url: "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500", description: "Boost speed up to 7000MB/s with 20-min robot install.", badge: "30% OFF" },
+      { title: "Original Replacement Battery", category: "Accessory", price: 59, original_price: 99, image_url: "https://images.unsplash.com/photo-1618788372246-79faff0c3742?w=500", description: "OEM battery replacement for Dell, HP, Lenovo & MacBooks.", badge: "1 Yr Warranty" }
+    ]);
+  }
+});
+
+// JWT Middleware
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
@@ -61,12 +89,41 @@ function authenticateToken(req, res, next) {
   });
 }
 
-// --- API ROUTES ---
+// --- PRODUCT API ENDPOINTS ---
+app.get('/api/products', async (req, res) => {
+  try {
+    const products = await Product.find({});
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
-// Register User or Technician
+app.post('/api/admin/products', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'admin') return res.status(403).json({ error: 'Access denied' });
+  try {
+    const newProduct = new Product(req.body);
+    await newProduct.save();
+    res.status(201).json(newProduct);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/api/admin/products/:id', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'admin') return res.status(403).json({ error: 'Access denied' });
+  try {
+    await Product.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Product deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// --- AUTH API ROUTES ---
 app.post('/api/auth/register', async (req, res) => {
   try {
-    const { name, email, phone, password, role } = req.body;
+    const { name, email, phone, password, role, skills, experience, service_area, vehicle_number, cv_filename } = req.body;
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).json({ error: 'Email already registered' });
 
@@ -78,18 +135,22 @@ app.post('/api/auth/register', async (req, res) => {
       email,
       phone,
       password_hash,
-      role: role === 'technician' ? 'technician' : 'user',
-      approval_status: role === 'admin' ? 'approved' : 'pending'
+      role: role === 'technician' ? 'technician' : (role === 'admin' ? 'admin' : 'user'),
+      approval_status: role === 'admin' ? 'approved' : 'pending',
+      skills: skills || [],
+      experience,
+      service_area,
+      vehicle_number,
+      cv_filename
     });
 
     await newUser.save();
-    res.status(201).json({ message: 'Registration successful. Waiting for admin approval.' });
+    res.status(201).json({ message: 'Registration submitted successfully. Pending admin approval.' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// Login
 app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -100,7 +161,7 @@ app.post('/api/auth/login', async (req, res) => {
     if (!validPassword) return res.status(400).json({ error: 'Invalid email or password' });
 
     if (user.role !== 'admin' && user.approval_status !== 'approved') {
-      return res.status(403).json({ error: `Account status is ${user.approval_status}. Please wait for admin approval.` });
+      return res.status(403).json({ error: `Account status is ${user.approval_status}. Awaiting admin approval.` });
     }
 
     const token = jwt.sign({ id: user._id, role: user.role, email: user.email }, JWT_SECRET, { expiresIn: '7d' });
@@ -110,46 +171,31 @@ app.post('/api/auth/login', async (req, res) => {
   }
 });
 
-// Get Service Requests
-app.get('/api/requests', authenticateToken, async (req, res) => {
-  try {
-    let query = {};
-    if (req.user.role === 'user') query.user_id = req.user.id;
-    if (req.user.role === 'technician') query.assigned_technician_id = req.user.id;
-
-    const requests = await ServiceRequest.find(query).populate('user_id', 'name phone email').populate('assigned_technician_id', 'name phone');
-    res.json(requests);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Create Service Request
+// --- SERVICE REQUEST API ---
 app.post('/api/requests', authenticateToken, async (req, res) => {
   try {
-    const { service_type, device_details, problem_description, customer_latitude, customer_longitude, customer_address } = req.body;
-    const ticket_number = 'EL' + Math.floor(100000 + Math.random() * 900000);
+    const { service_type, category_detail, device_details, problem_description, customer_address } = req.body;
+    const ticket_number = 'EL-' + Math.floor(100000 + Math.random() * 900000);
 
     const newRequest = new ServiceRequest({
       ticket_number,
       user_id: req.user.id,
       service_type,
+      category_detail,
       device_details,
       problem_description,
-      customer_latitude,
-      customer_longitude,
       customer_address,
       status: 'New'
     });
 
     await newRequest.save();
-    res.status(201).json(newRequest);
+    res.status(201).json({ message: 'Service request created', ticket_number });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// Admin: Get Users & Technicians Pending Approval
+// --- ADMIN MANAGEMENT API ---
 app.get('/api/admin/users', authenticateToken, async (req, res) => {
   if (req.user.role !== 'admin') return res.status(403).json({ error: 'Access denied' });
   try {
@@ -160,11 +206,10 @@ app.get('/api/admin/users', authenticateToken, async (req, res) => {
   }
 });
 
-// Admin: Update User Approval Status
 app.patch('/api/admin/users/:id/approve', authenticateToken, async (req, res) => {
   if (req.user.role !== 'admin') return res.status(403).json({ error: 'Access denied' });
   try {
-    const { status } = req.body; // 'approved' or 'rejected'
+    const { status } = req.body;
     const updated = await User.findByIdAndUpdate(req.params.id, { approval_status: status }, { new: true });
     res.json(updated);
   } catch (err) {
@@ -172,53 +217,19 @@ app.patch('/api/admin/users/:id/approve', authenticateToken, async (req, res) =>
   }
 });
 
-// Admin: Assign Technician to Job
-app.patch('/api/requests/:id/assign', authenticateToken, async (req, res) => {
-  if (req.user.role !== 'admin') return res.status(403).json({ error: 'Access denied' });
-  try {
-    const { technician_id } = req.body;
-    const updated = await ServiceRequest.findByIdAndUpdate(
-      req.params.id,
-      { assigned_technician_id: technician_id, status: 'Technician Assigned' },
-      { new: true }
-    );
-    io.emit('job-assigned', updated);
-    res.json(updated);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Portal Route Handlers
+// --- PORTAL ROUTE HANDLERS ---
 app.get('/user', (req, res) => res.sendFile(path.join(__dirname, 'public', 'user.html')));
 app.get('/technician', (req, res) => res.sendFile(path.join(__dirname, 'public', 'technician.html')));
-app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
+app.get('/admin-secret-access', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
 
-// Socket.io Real-Time Tracking
+// --- SOCKET.IO REAL-TIME TRACKING ---
 io.on('connection', (socket) => {
-  console.log('Client connected:', socket.id);
-
   socket.on('technician-location-update', (data) => {
-    // data: { jobId, latitude, longitude, technicianId }
     io.emit(`live-tracking-${data.jobId}`, data);
-    io.emit('admin-live-map-update', data);
-  });
-
-  socket.on('update-status', async (data) => {
-    // data: { jobId, status }
-    try {
-      await ServiceRequest.findByIdAndUpdate(data.jobId, { status: data.status });
-      io.emit(`status-update-${data.jobId}`, data);
-    } catch (e) {
-      console.error(e);
-    }
-  });
-
-  socket.on('disconnect', () => {
-    console.log('Client disconnected:', socket.id);
   });
 });
 
+// Safe Port Listener with EADDRINUSE conflict recovery
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`ELOANCE production server running on port ${PORT}`);
