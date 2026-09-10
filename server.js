@@ -15,7 +15,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Database Connection & Secrets
 const mongoose = require('mongoose');
-
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/eloance';
 
 mongoose.connect(MONGO_URI)
