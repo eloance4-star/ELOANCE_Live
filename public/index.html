@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ELOANCE | Production-Ready On-Demand Tech & 20-Min Robot Delivery</title>
+    <title>ELOANCE | AI-Powered Laptop Repair & 20-Min Robot Delivery</title>
+    <!-- Tailwind CSS for modern dark/gold/cyan styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Leaflet CSS for Real GPS Mapping -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -16,32 +18,27 @@
             color: #f3f4f6;
             overflow-x: hidden;
         }
-        .glow-gold { text-shadow: 0 0 25px rgba(234, 179, 8, 0.5); }
+        .glow-gold { text-shadow: 0 0 25px rgba(234, 179, 8, 0.45); }
         .glow-cyan { box-shadow: 0 0 30px rgba(6, 182, 212, 0.25); }
         .glass-panel {
             background: rgba(17, 24, 39, 0.85);
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 215, 0, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.18);
         }
-        /* Cinematic Video Background Container */
-        .hero-container {
-            position: relative;
-            background: linear-gradient(135deg, #030712 0%, #0f172a 100%);
-        }
-        .hero-video {
+        /* Cinematic Slider Hero Background */
+        .hero-slider-bg {
             position: absolute;
-            top: 50%; left: 50%;
-            min-width: 100%; min-height: 100%;
-            width: auto; height: auto;
-            transform: translate(-50%, -50%);
-            object-fit: cover;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            transition: opacity 1.5s ease-in-out;
             z-index: 1;
             filter: brightness(0.4) contrast(1.1);
         }
         .hero-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(3, 7, 18, 0.75);
+            background: linear-gradient(to bottom, rgba(3,7,18,0.8), rgba(3,7,18,0.92));
             z-index: 2;
         }
         .hero-content {
@@ -53,38 +50,39 @@
 </head>
 <body class="bg-gray-950 text-white selection:bg-amber-500 selection:text-black">
 
-    <!-- Top Festival & Special Offer Banner -->
+    <!-- Festival & Special Offer Banner -->
     <div class="bg-gradient-to-r from-amber-600 via-yellow-500 to-cyan-500 text-black text-xs sm:text-sm font-extrabold py-2.5 px-4 text-center tracking-wide flex justify-center items-center gap-2 shadow-2xl relative z-50">
         <i class="fa-solid fa-gift animate-bounce"></i> FESTIVAL SPECIAL: Flat 30% OFF on Motherboard Repairs & Free 20-Min Autonomous Robot Delivery! Use Code: <span class="bg-black text-amber-400 px-2.5 py-0.5 rounded">EL30</span>
     </div>
 
-    <!-- Navigation Header -->
+    <!-- Navigation Header with Custom Logo Badge -->
     <header class="sticky top-0 z-40 glass-panel border-b border-amber-500/20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('home')">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-amber-500/40">
-                    <i class="fa-solid fa-microchip text-black font-black text-lg"></i>
-                </div>
+                <!-- Custom Circular Logo Badge -->
+                <img src="/logo.png" alt="ELOANCE Logo" class="w-12 h-12 rounded-full object-cover border-2 border-amber-500/50 shadow-lg shadow-amber-500/30">
                 <span class="text-2xl font-black tracking-wider bg-gradient-to-r from-amber-400 to-cyan-400 bg-clip-text text-transparent">ELOANCE</span>
             </div>
             
             <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-300">
                 <button onclick="switchView('home')" class="hover:text-amber-400 transition">Home</button>
+                <a href="#services" class="hover:text-amber-400 transition">Services</a>
+                <a href="#refurbished" class="hover:text-cyan-400 transition">Store</a>
                 <button onclick="switchView('user')" class="hover:text-amber-400 transition">User Portal</button>
                 <button onclick="switchView('technician')" class="hover:text-cyan-400 transition">Technician Portal</button>
                 <button onclick="switchView('admin')" class="hover:text-amber-400 transition text-amber-400 font-bold"><i class="fa-solid fa-lock mr-1"></i> Admin Portal</button>
             </nav>
 
             <div class="flex items-center gap-3">
-                <button onclick="switchView('user')" class="px-4 py-2 text-xs sm:text-sm font-extrabold rounded-xl bg-amber-500 text-black hover:bg-amber-400 transition shadow-lg shadow-amber-500/25">Customer Login</button>
+                <button onclick="switchView('user')" class="px-4 py-2 text-xs sm:text-sm font-extrabold rounded-xl bg-amber-500 text-black hover:bg-amber-400 transition shadow-lg shadow-amber-500/25">Customer Portal</button>
             </div>
         </div>
     </header>
 
     <!-- Floating Autonomous Robot Widget -->
     <div class="fixed bottom-6 right-6 z-50 flex items-center gap-3 p-3.5 rounded-2xl glass-panel border border-cyan-500/40 shadow-2xl shadow-cyan-500/30 animate-bounce cursor-pointer hover:scale-105 transition" onclick="alert('ELOANCE Autonomous Delivery Fleet is online! 20-min guaranteed express part drop active in your sector.')">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-400 to-amber-500 flex items-center justify-center text-black font-bold text-lg shadow">
-            <i class="fa-solid fa-robot"></i>
+        <div class="w-10 h-10 rounded-full overflow-hidden border border-cyan-400 shadow">
+            <img src="/logo.png" alt="Robot Badge" class="w-full h-full object-cover">
         </div>
         <div class="text-left hidden sm:block">
             <p class="text-[10px] text-cyan-400 font-bold uppercase tracking-widest">Robot Rider Active</p>
@@ -92,37 +90,96 @@
         </div>
     </div>
 
-    <!-- ================= VIEW 1: HOME LANDING PAGE ================= -->
+    <!-- ================= VIEW 1: HOME LANDING PAGE WITH HERO SLIDER ================= -->
     <div id="view-home" class="view-section">
-        <!-- Hero Section with Robot Video Background -->
-        <section class="hero-container relative min-h-[85vh] flex items-center justify-center text-center px-4 overflow-hidden">
-            <video autoplay muted loop playsinline class="hero-video">
-                <source src="https://assets.mixkit.co/videos/preview/mixkit-futuristic-robot-delivering-a-package-42848-large.mp4" type="video/mp4">
-            </video>
+        <!-- Hero Section with Background Robot Bike Image Sliders -->
+        <section class="relative min-h-[90vh] flex items-center justify-center text-center px-4 overflow-hidden bg-gray-950">
+            <!-- Background Image Sliders -->
+            <div id="hero-slider-1" class="hero-slider-bg opacity-100" style="background-image: url('/hero-bike.png');"></div>
+            <div id="hero-slider-2" class="hero-slider-bg opacity-0" style="background-image: url('https://assets.mixkit.co/videos/preview/mixkit-futuristic-robot-delivering-a-package-42848-large.mp4');"></div>
             <div class="hero-overlay"></div>
 
             <div class="hero-content max-w-4xl mx-auto space-y-6 py-12">
                 <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border-cyan-500/30 text-cyan-400 text-xs font-bold tracking-widest uppercase">
-                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span> Live AI Diagnostics & Autonomous Delivery
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span> Autonomous Bike Fleet Live in 20 Mins
                 </div>
                 <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-none">
-                    Instant Laptop Repair & <span class="bg-gradient-to-r from-amber-400 via-yellow-300 to-cyan-400 bg-clip-text text-transparent glow-gold">20-Min Robot Drop</span>
+                    Laptop Repair & <span class="bg-gradient-to-r from-amber-400 via-yellow-300 to-cyan-400 bg-clip-text text-transparent glow-gold">20-Min Robot Drop</span>
                 </h1>
                 <p class="text-base sm:text-xl text-gray-300 max-w-2xl mx-auto font-medium">
-                    Professional doorstep repairs, advanced AI troubleshooting, and instant spare parts delivered by autonomous robots in 20 minutes flat.
+                    Professional doorstep technician repairs, instant AI diagnostics, and autonomous robot bike delivery straight to your doorstep within minutes.
                 </p>
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
                     <button onclick="switchView('user')" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-extrabold text-base hover:scale-105 transition shadow-xl shadow-amber-500/30">
-                        Book Service Request Now
+                        Book Service Request
                     </button>
                     <button onclick="document.getElementById('ai-diagnostic-section').scrollIntoView({behavior: 'smooth'})" class="w-full sm:w-auto px-8 py-4 rounded-xl glass-panel text-cyan-400 font-extrabold text-base hover:bg-cyan-500/10 transition border border-cyan-500/30">
-                        Try AI Assistant <i class="fa-solid fa-brain ml-2"></i>
+                        Try AI Assistant <i class="fa-solid fa-wand-magic-sparkles ml-2"></i>
                     </button>
                 </div>
             </div>
         </section>
 
-        <!-- AI Diagnostic Interactive Assistant -->
+        <!-- Quick Metrics Bar -->
+        <section class="border-y border-amber-500/10 bg-gray-950/60 py-8">
+            <div class="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div>
+                    <p class="text-3xl sm:text-4xl font-black text-amber-400">20 Mins</p>
+                    <p class="text-xs sm:text-sm text-gray-400 mt-1 uppercase tracking-wider font-semibold">Average Robot Bike Dispatch</p>
+                </div>
+                <div>
+                    <p class="text-3xl sm:text-4xl font-black text-cyan-400">100%</p>
+                    <p class="text-xs sm:text-sm text-gray-400 mt-1 uppercase tracking-wider font-semibold">Real-Time GPS Tracked</p>
+                </div>
+                <div>
+                    <p class="text-3xl sm:text-4xl font-black text-amber-400">4.9★</p>
+                    <p class="text-xs sm:text-sm text-gray-400 mt-1 uppercase tracking-wider font-semibold">Customer Rating</p>
+                </div>
+                <div>
+                    <p class="text-3xl sm:text-4xl font-black text-cyan-400">24/7</p>
+                    <p class="text-xs sm:text-sm text-gray-400 mt-1 uppercase tracking-wider font-semibold">AI Diagnostic Active</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Core Services Section -->
+        <section id="services" class="py-20 px-4 max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-amber-400">Next-Generation Capabilities</h2>
+                <h3 class="text-3xl sm:text-4xl font-extrabold">Engineered for Maximum Speed & Precision</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-panel p-8 rounded-2xl hover:border-amber-500/50 transition group">
+                    <div class="w-14 h-14 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 text-2xl mb-6 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-laptop-medical"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3">Doorstep Laptop & PC Repair</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">Expert technicians dispatched directly to your location with complete diagnostic toolkits for immediate fix.</p>
+                    <button onclick="switchView('user')" class="text-amber-400 text-sm font-bold flex items-center gap-2 hover:translate-x-1 transition">Book Technician <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+
+                <div class="glass-panel p-8 rounded-2xl hover:border-cyan-500/50 transition group">
+                    <div class="w-14 h-14 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 text-2xl mb-6 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-motorcycle"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3">20-Min Autonomous Robot Bike Drop</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">Need an urgent charger, cable, or spare part? Our robotic bike fleet dispatches instantly to your pin.</p>
+                    <button onclick="switchView('user')" class="text-cyan-400 text-sm font-bold flex items-center gap-2 hover:translate-x-1 transition">Order Parts <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+
+                <div class="glass-panel p-8 rounded-2xl hover:border-amber-500/50 transition group">
+                    <div class="w-14 h-14 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 text-2xl mb-6 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3">AI Diagnostic Assistant</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">Describe your device error code or symptom to our advanced AI engine for instant troubleshooting steps.</p>
+                    <button onclick="document.getElementById('ai-diagnostic-section').scrollIntoView({behavior: 'smooth'})" class="text-amber-400 text-sm font-bold flex items-center gap-2 hover:translate-x-1 transition">Consult AI <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Diagnostic Interactive Assistant Section -->
         <section id="ai-diagnostic-section" class="py-20 px-4 max-w-4xl mx-auto">
             <div class="glass-panel p-8 sm:p-10 rounded-3xl glow-cyan border border-cyan-500/30 relative">
                 <div class="flex items-center gap-3 mb-4">
@@ -130,7 +187,7 @@
                     <span class="text-cyan-400 text-xs font-bold uppercase tracking-widest">ELOANCE Neural Problem Analyzer</span>
                 </div>
                 <h3 class="text-2xl sm:text-3xl font-extrabold mb-2">Smart Hardware vs Software Classification</h3>
-                <p class="text-gray-400 text-sm mb-6">Describe your laptop or device issue. Our AI instantly pinpoints the fault category and suggests repair options:</p>
+                <p class="text-gray-400 text-sm mb-6">Describe your issue. Our AI automatically classifies it into <strong>Hardware</strong> (Motherboard, Battery, RAM, SSD) or <strong>Software</strong> (OS Crash, Drivers, Malware):</p>
                 
                 <textarea id="ai-user-query" rows="3" class="w-full bg-gray-900 border border-gray-700 rounded-xl p-4 text-sm text-white focus:outline-none focus:border-cyan-400 transition" placeholder="e.g. Laptop battery draining rapidly, screen flickering, or Windows blue screen error..."></textarea>
                 
@@ -142,11 +199,11 @@
             </div>
         </section>
 
-        <!-- Store & Festival Pricing Section -->
-        <section class="py-20 px-4 max-w-7xl mx-auto border-t border-gray-800">
+        <!-- Refurbished & Festival Products Catalog Section -->
+        <section id="refurbished" class="py-20 px-4 max-w-7xl mx-auto border-t border-gray-800">
             <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
-                <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Festival Special Catalog</span>
-                <h2 class="text-3xl sm:text-4xl font-extrabold">Certified Refurbished Laptops & Upgrades</h2>
+                <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Festival Special Store</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold">Certified Refurbished Laptops & Accessories</h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -154,7 +211,7 @@
                     <div class="p-6 space-y-4">
                         <div class="flex justify-between items-center">
                             <span class="px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-bold">Best Seller</span>
-                            <span class="text-cyan-400 text-xs font-bold">20-Min Robot Delivery</span>
+                            <span class="text-cyan-400 text-xs font-bold">20-Min Robot Bike Drop</span>
                         </div>
                         <h4 class="text-xl font-bold">MacBook Pro M1 (Refurbished A+)</h4>
                         <p class="text-gray-400 text-xs leading-relaxed">16GB RAM, 512GB SSD, flawless retina display. Tested by ELOANCE AI diagnostics.</p>
@@ -264,7 +321,7 @@
 
             <div class="glass-panel p-6 rounded-3xl space-y-6 flex flex-col justify-between">
                 <div>
-                    <h3 class="text-lg font-extrabold text-cyan-400 mb-4"><i class="fa-solid fa-map-location-dot mr-2"></i> Live Technician Tracking</h3>
+                    <h3 class="text-lg font-extrabold text-cyan-400 mb-4"><i class="fa-solid fa-map-location-dot mr-2"></i> Live Robot Bike Tracking</h3>
                     <div id="ticket-info-display" class="bg-gray-900/80 p-4 rounded-xl text-xs space-y-2 border border-cyan-500/30 mb-4">
                         <p class="text-gray-400">Status: <span id="track-status" class="text-amber-400 font-bold">Waiting for booking</span></p>
                         <p class="text-gray-400">Assigned Technician: <span id="track-tech" class="text-white font-bold">Unassigned</span></p>
@@ -282,7 +339,7 @@
                     <select id="payment-method" class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-xs text-white">
                         <option value="Card">Credit / Debit Card</option>
                         <option value="UPI">UPI / Instant QR</option>
-                        <option value="RobotCOD">Cash on Robot Delivery</option>
+                        <option value="RobotCOD">Cash on Robot Bike Delivery</option>
                     </select>
                     <button onclick="processSecurePayment()" class="w-full py-2.5 bg-cyan-500 text-black font-extrabold text-xs rounded-lg hover:bg-cyan-400 transition">Pay Securely & Confirm</button>
                 </div>
@@ -409,9 +466,33 @@
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer class="py-12 border-t border-gray-800 text-center text-xs text-gray-500">
+        <p class="text-amber-400 font-bold text-sm mb-2">ELOANCE PLATFORM — SECURE CLOUD ENVIRONMENT</p>
+        <p>© 2026 ELOANCE Technologies. All rights reserved. Powered by Node.js, MongoDB & Real-Time WebSockets.</p>
+    </footer>
+
     <!-- Leaflet JS & App Script -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
+        // Hero Background Image Slider Logic
+        let currentSlide = 1;
+        setInterval(() => {
+            const slide1 = document.getElementById('hero-slider-1');
+            const slide2 = document.getElementById('hero-slider-2');
+            if(slide1 && slide2) {
+                if(currentSlide === 1) {
+                    slide1.style.opacity = '0';
+                    slide2.style.opacity = '1';
+                    currentSlide = 2;
+                } else {
+                    slide1.style.opacity = '1';
+                    slide2.style.opacity = '0';
+                    currentSlide = 1;
+                }
+            }
+        }, 5000);
+
         function switchView(viewName) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
             document.getElementById('view-' + viewName).classList.remove('hidden');
@@ -435,7 +516,7 @@
                 let isHardware = query.includes('screen') || query.includes('battery') || query.includes('power') || query.includes('board') || query.includes('key') || query.includes('charge');
                 let type = isHardware ? 'Hardware' : 'Software';
                 let suggestions = isHardware 
-                    ? 'Recommended Hardware Parts: <strong>Motherboard Chipset, OEM Battery, or SSD</strong>. Our robot can deliver this in 20 minutes.'
+                    ? 'Recommended Hardware Parts: <strong>Motherboard Chipset, OEM Battery, or SSD</strong>. Our robot bike can deliver this in 20 minutes.'
                     : 'Recommended Software Solution: <strong>OS Recovery, Driver Clean Reinstall, or Malware Removal</strong>.';
 
                 output.innerHTML = `
@@ -482,7 +563,7 @@
             e.preventDefault();
             const ticketNo = 'EL-' + Math.floor(100000 + Math.random() * 900000);
             document.getElementById('track-status').innerText = 'Admin Review / Technician Assigned';
-            document.getElementById('track-tech').innerText = 'Pawan S. (Bike #04)';
+            document.getElementById('track-tech').innerText = 'Pawan S. (Robot Bike #04)';
             document.getElementById('track-eta').innerText = '18 Minutes';
             alert(`Service Request Created Successfully!\nTicket Number: ${ticketNo}\nConfirmation email sent to your registered email.`);
         }
