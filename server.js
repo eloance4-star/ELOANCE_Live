@@ -232,18 +232,16 @@ io.on('connection', (socket) => {
   });
 });
 
-// Safe Port Listener with EADDRINUSE conflict recovery
+// Safe Port Listener with Full Crash Diagnostics
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`ELOANCE production server running on port ${PORT}`);
+  console.log(`ELOANCE production server successfully running on port ${PORT}`);
 }).on('error', (err) => {
-  if (err.code === 'EADDRINUSE') {
-    console.error(`Port ${PORT} is already in use. Retrying...`);
-    setTimeout(() => {
-      server.close();
-      server.listen(PORT);
-    }, 1000);
-  } else {
-    console.error(err);
-  }
+  console.error('SERVER STARTUP CRASH ERROR:', err);
+  process.exit(1);
+});
+
+// Catch unhandled promise rejections (like bad MongoDB URI strings)
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('UNHANDLED REJECTION:', reason);
 });
