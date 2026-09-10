@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ELOANCE | User Portal & Live GPS Tracker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root { --primary-gold: #D4AF37; --neon-cyan: #06B6D4; --dark-950: #050811; --glass-bg: rgba(19, 27, 46, 0.85); --glass-border: rgba(212, 175, 55, 0.28); }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--dark-950); color: #fff; margin: 0; padding: 20px; }
+    .container { max-width: 1000px; margin: 0 auto; }
+    .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); padding-bottom: 15px; }
+    .card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 24px; margin-top: 20px; backdrop-filter: blur(16px); }
+    .map-box { width: 100%; height: 280px; background: #080D1A; border: 1px solid rgba(6,182,212,0.4); border-radius: 12px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .pin { position: absolute; padding: 8px 12px; background: var(--primary-gold); color: #050811; font-weight: bold; border-radius: 20px; font-size: 12px; box-shadow: 0 0 15px var(--primary-gold); }
+    .btn { background: linear-gradient(135deg, #FDE68A 0%, #D4AF37 50%, #92400E 100%); color: #0B0F19; padding: 10px 20px; border-radius: 10px; font-weight: bold; border: none; cursor: pointer; }
+    input, select, textarea { width: 100%; background: #0B0F19; border: 1px solid rgba(255,255,255,0.2); padding: 10px; color: #fff; border-radius: 8px; margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2><i class="fa-solid fa-user-circle" style="color:var(--primary-gold);"></i> ELOANCE Secure User Portal</h2>
+      <a href="/" style="color:var(--primary-gold); text-decoration:none;"><i class="fa-solid fa-home"></i> Return to Main Website</a>
+    </div>
+
+    <div class="card">
+      <h3><i class="fa-solid fa-satellite-dish" style="color:var(--neon-cyan);"></i> Live Technician Tracking (Ticket #EL12345)</h3>
+      <p><b>Status:</b> On The Way | <b>Technician:</b> Pawan S. (Bike #04) | <b>ETA:</b> <span id="eta-val">12 Minutes</span></p>
+      <div class="map-box">
+        <div style="position:absolute; inset:0; background-image:linear-gradient(rgba(6, 182, 212, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(6, 182, 212, 0.1) 1px, transparent 1px); background-size:30px 30px;"></div>
+        <div id="tech-marker" class="pin" style="top:40%; left:35%;"><i class="fa-solid fa-motorcycle"></i> Pawan S. (3.2 KM)</div>
+        <div class="pin" style="top:70%; right:30%; background:var(--neon-cyan); color:#050811;"><i class="fa-solid fa-house"></i> Customer Location</div>
+      </div>
+      <div style="margin-top:15px; display:flex; gap:10px; align-items:center;">
+        <span>Rate Service:</span>
+        <button class="btn" style="padding:6px 12px;" onclick="rateService('EL12345', 5)">⭐ 5 Stars</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><i class="fa-solid fa-wrench" style="color:var(--primary-gold);"></i> Book Doorstep Repair or AnyDesk Fix</h3>
+      <form id="service-form">
+        <label>Service Type</label>
+        <select id="service_type">
+          <option>20-Min Doorstep Repair</option>
+          <option>AnyDesk Software Fix (₹199)</option>
+          <option>Hardware Upgrade (SSD/RAM)</option>
+        </select>
+        <label>Problem Description</label>
+        <textarea id="problem" placeholder="Describe issue..."></textarea>
+        <label>Address</label>
+        <input type="text" id="address" placeholder="Enter address">
+        <button type="submit" class="btn">Submit Request</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const token = localStorage.getItem('eloance_token') || 'demo_token';
+    socket.on('live_location_update', (data) => {
+      document.getElementById('tech-marker').style.top = (40 + (data.latitude - 28.6139)*100) + '%';
+      document.getElementById('tech-marker').style.left = (35 + (data.longitude - 77.2090)*100) + '%';
+    });
+
+    document.getElementById('service-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const res = await fetch('/api/requests/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify({
+          service_type: document.getElementById('service_type').value,
+          problem_description: document.getElementById('problem').value,
+          customer_address: document.getElementById('address').value
+        })
+      });
+      const data = await res.json();
+      if(data.success) alert('Service request created successfully! Ticket ID: ' + data.request.id);
+      else alert('Please login first on the main page.');
+    });
+
+    async function rateService(ticketId, stars) {
+      await fetch('/api/requests/rate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify({ requestId: ticketId, rating: stars })
+      });
+      alert(`Rated ${stars} stars successfully!`);
+    }
+  </script>
+</body>
+</html>
