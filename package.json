@@ -1,0 +1,15 @@
+{
+  "name": "eloance-production-v10",
+  "version": "1.0.0",
+  "description": "ELOANCE Full Platform with index_v8 design, secure portals, WebSockets, and maintenance mode",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "socket.io": "^4.7.5"
+  }
+}
