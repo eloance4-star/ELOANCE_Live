@@ -14,8 +14,9 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Database Connection & Secrets
+const mongoose = require('mongoose');
+
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/eloance';
-const JWT_SECRET = process.env.JWT_SECRET || 'eloance_super_secret_key_2026';
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log('Connected to MongoDB Atlas successfully'))
