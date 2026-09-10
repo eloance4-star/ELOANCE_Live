@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ELOANCE | AI-Powered Laptop Repair & 20-Min Robot Delivery</title>
-    <!-- Tailwind CSS for modern dark/gold/cyan styling -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Leaflet CSS for Real GPS Mapping -->
+    <!-- Leaflet CSS for GPS Mapping -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
@@ -25,7 +25,7 @@
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 215, 0, 0.18);
         }
-        /* Cinematic Slider Hero Background */
+        /* Cinematic Slider Background with High Brightness */
         .hero-slider-bg {
             position: absolute;
             inset: 0;
@@ -33,12 +33,12 @@
             background-position: center;
             transition: opacity 1.5s ease-in-out;
             z-index: 1;
-            filter: brightness(0.4) contrast(1.1);
+            filter: brightness(0.85) contrast(1.05);
         }
         .hero-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(3,7,18,0.8), rgba(3,7,18,0.92));
+            background: linear-gradient(to bottom, rgba(3,7,18,0.7), rgba(3,7,18,0.92));
             z-index: 2;
         }
         .hero-content {
@@ -55,11 +55,10 @@
         <i class="fa-solid fa-gift animate-bounce"></i> FESTIVAL SPECIAL: Flat 30% OFF on Motherboard Repairs & Free 20-Min Autonomous Robot Delivery! Use Code: <span class="bg-black text-amber-400 px-2.5 py-0.5 rounded">EL30</span>
     </div>
 
-    <!-- Navigation Header with Custom Logo Badge -->
+    <!-- Navigation Header -->
     <header class="sticky top-0 z-40 glass-panel border-b border-amber-500/20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('home')">
-                <!-- Custom Circular Logo Badge -->
                 <img src="/logo.png" alt="ELOANCE Logo" class="w-12 h-12 rounded-full object-cover border-2 border-amber-500/50 shadow-lg shadow-amber-500/30">
                 <span class="text-2xl font-black tracking-wider bg-gradient-to-r from-amber-400 to-cyan-400 bg-clip-text text-transparent">ELOANCE</span>
             </div>
@@ -67,10 +66,11 @@
             <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-300">
                 <button onclick="switchView('home')" class="hover:text-amber-400 transition">Home</button>
                 <a href="#services" class="hover:text-amber-400 transition">Services</a>
-                <a href="#refurbished" class="hover:text-cyan-400 transition">Store</a>
+                <a href="#store-catalog" class="hover:text-cyan-400 transition">Store & Laptops</a>
+                <a href="#career-section" class="hover:text-amber-400 transition">Careers</a>
                 <button onclick="switchView('user')" class="hover:text-amber-400 transition">User Portal</button>
                 <button onclick="switchView('technician')" class="hover:text-cyan-400 transition">Technician Portal</button>
-                <button onclick="switchView('admin')" class="hover:text-amber-400 transition text-amber-400 font-bold"><i class="fa-solid fa-lock mr-1"></i> Admin Portal</button>
+                <a href="/admin-secret-access" class="hover:text-amber-400 transition text-amber-400 font-bold"><i class="fa-solid fa-lock mr-1"></i> Admin</a>
             </nav>
 
             <div class="flex items-center gap-3">
@@ -79,7 +79,7 @@
         </div>
     </header>
 
-    <!-- Floating Autonomous Robot Widget -->
+    <!-- Floating Robot Widget -->
     <div class="fixed bottom-6 right-6 z-50 flex items-center gap-3 p-3.5 rounded-2xl glass-panel border border-cyan-500/40 shadow-2xl shadow-cyan-500/30 animate-bounce cursor-pointer hover:scale-105 transition" onclick="alert('ELOANCE Autonomous Delivery Fleet is online! 20-min guaranteed express part drop active in your sector.')">
         <div class="w-10 h-10 rounded-full overflow-hidden border border-cyan-400 shadow">
             <img src="/logo.png" alt="Robot Badge" class="w-full h-full object-cover">
@@ -90,13 +90,12 @@
         </div>
     </div>
 
-    <!-- ================= VIEW 1: HOME LANDING PAGE WITH HERO SLIDER ================= -->
+    <!-- ================= VIEW 1: HOME LANDING PAGE ================= -->
     <div id="view-home" class="view-section">
-        <!-- Hero Section with Background Robot Bike Image Sliders -->
+        <!-- Hero Section with Background Robot Bike Image Slider -->
         <section class="relative min-h-[90vh] flex items-center justify-center text-center px-4 overflow-hidden bg-gray-950">
-            <!-- Background Image Sliders -->
             <div id="hero-slider-1" class="hero-slider-bg opacity-100" style="background-image: url('/hero-bike.png');"></div>
-            <div id="hero-slider-2" class="hero-slider-bg opacity-0" style="background-image: url('https://assets.mixkit.co/videos/preview/mixkit-futuristic-robot-delivering-a-package-42848-large.mp4');"></div>
+            <div id="hero-slider-2" class="hero-slider-bg opacity-0" style="background-image: url('https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=1600');"></div>
             <div class="hero-overlay"></div>
 
             <div class="hero-content max-w-4xl mx-auto space-y-6 py-12">
@@ -104,7 +103,7 @@
                     <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span> Autonomous Bike Fleet Live in 20 Mins
                 </div>
                 <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-none">
-                    Laptop Repair & <span class="bg-gradient-to-r from-amber-400 via-yellow-300 to-cyan-400 bg-clip-text text-transparent glow-gold">20-Min Robot Drop</span>
+                    Laptop Solution & <span class="bg-gradient-to-r from-amber-400 via-yellow-300 to-cyan-400 bg-clip-text text-transparent glow-gold">20-Min Robot Drop</span>
                 </h1>
                 <p class="text-base sm:text-xl text-gray-300 max-w-2xl mx-auto font-medium">
                     Professional doorstep technician repairs, instant AI diagnostics, and autonomous robot bike delivery straight to your doorstep within minutes.
@@ -179,7 +178,7 @@
             </div>
         </section>
 
-        <!-- AI Diagnostic Interactive Assistant Section -->
+        <!-- AI Diagnostic Assistant -->
         <section id="ai-diagnostic-section" class="py-20 px-4 max-w-4xl mx-auto">
             <div class="glass-panel p-8 sm:p-10 rounded-3xl glow-cyan border border-cyan-500/30 relative">
                 <div class="flex items-center gap-3 mb-4">
@@ -199,67 +198,57 @@
             </div>
         </section>
 
-        <!-- Refurbished & Festival Products Catalog Section -->
-        <section id="refurbished" class="py-20 px-4 max-w-7xl mx-auto border-t border-gray-800">
+        <!-- Dynamic Store Catalog (Synced with Admin Portal) -->
+        <section id="store-catalog" class="py-20 px-4 max-w-7xl mx-auto border-t border-gray-800">
             <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
-                <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Festival Special Store</span>
-                <h2 class="text-3xl sm:text-4xl font-extrabold">Certified Refurbished Laptops & Accessories</h2>
+                <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Live Zomato-Style Store Catalog</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold">Refurbished Laptops & Accessories (Managed by Admin)</h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="glass-panel rounded-2xl overflow-hidden hover:border-amber-500/50 transition group flex flex-col justify-between">
-                    <div class="p-6 space-y-4">
-                        <div class="flex justify-between items-center">
-                            <span class="px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-bold">Best Seller</span>
-                            <span class="text-cyan-400 text-xs font-bold">20-Min Robot Bike Drop</span>
-                        </div>
-                        <h4 class="text-xl font-bold">MacBook Pro M1 (Refurbished A+)</h4>
-                        <p class="text-gray-400 text-xs leading-relaxed">16GB RAM, 512GB SSD, flawless retina display. Tested by ELOANCE AI diagnostics.</p>
-                        <div class="flex items-baseline gap-3">
-                            <span class="text-2xl font-black text-amber-400">$699</span>
-                            <span class="text-sm text-gray-500 line-through">$999</span>
-                        </div>
-                    </div>
-                    <div class="p-6 pt-0">
-                        <button onclick="switchView('user')" class="w-full py-3 rounded-xl bg-amber-500 text-black font-bold text-sm hover:bg-amber-400 transition">Buy Now & Dispatch</button>
-                    </div>
+            <!-- Dynamically populated products from MongoDB database -->
+            <div id="dynamic-store-catalog" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Loaded dynamically via JavaScript -->
+            </div>
+        </section>
+
+        <!-- Technician Career Section -->
+        <section id="career-section" class="py-20 px-4 max-w-4xl mx-auto border-t border-gray-800">
+            <div class="glass-panel p-8 sm:p-10 rounded-3xl border border-cyan-500/30 space-y-6">
+                <div class="text-center space-y-2">
+                    <span class="text-xs font-bold uppercase tracking-widest text-cyan-400">Join the ELOANCE Fleet</span>
+                    <h3 class="text-2xl sm:text-3xl font-extrabold">Technician Career & Field Application</h3>
+                    <p class="text-gray-400 text-sm">Apply to become a verified ELOANCE doorstep technician or robot bike delivery partner.</p>
                 </div>
 
-                <div class="glass-panel rounded-2xl overflow-hidden hover:border-cyan-500/50 transition group flex flex-col justify-between">
-                    <div class="p-6 space-y-4">
-                        <div class="flex justify-between items-center">
-                            <span class="px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-xs font-bold">Festival Offer</span>
-                            <span class="text-cyan-400 text-xs font-bold">Instant Install</span>
+                <form onsubmit="submitTechnicianCareer(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 mb-1">Full Name</label>
+                            <input type="text" id="career-name" required class="w-full bg-gray-900 border border-gray-700 rounded-xl p-3 text-sm text-white focus:border-cyan-400 outline-none" placeholder="Pawan Sharma">
                         </div>
-                        <h4 class="text-xl font-bold">High-Speed 1TB NVMe SSD Upgrade</h4>
-                        <p class="text-gray-400 text-xs leading-relaxed">Boost your laptop speed up to 7000MB/s. Installed at your doorstep by expert technician.</p>
-                        <div class="flex items-baseline gap-3">
-                            <span class="text-2xl font-black text-cyan-400">$89</span>
-                            <span class="text-sm text-gray-500 line-through">$149</span>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 mb-1">Mobile Number</label>
+                            <input type="tel" id="career-phone" required class="w-full bg-gray-900 border border-gray-700 rounded-xl p-3 text-sm text-white focus:border-cyan-400 outline-none" placeholder="+1 (555) 019-2834">
                         </div>
                     </div>
-                    <div class="p-6 pt-0">
-                        <button onclick="switchView('user')" class="w-full py-3 rounded-xl bg-cyan-500 text-black font-bold text-sm hover:bg-cyan-400 transition">Book Upgrade Service</button>
-                    </div>
-                </div>
-
-                <div class="glass-panel rounded-2xl overflow-hidden hover:border-amber-500/50 transition group flex flex-col justify-between">
-                    <div class="p-6 space-y-4">
-                        <div class="flex justify-between items-center">
-                            <span class="px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-bold">OEM Certified</span>
-                            <span class="text-amber-400 text-xs font-bold">1 Year Warranty</span>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 mb-1">Email Address</label>
+                            <input type="email" id="career-email" required class="w-full bg-gray-900 border border-gray-700 rounded-xl p-3 text-sm text-white focus:border-cyan-400 outline-none" placeholder="technician@eloance.tech">
                         </div>
-                        <h4 class="text-xl font-bold">Original Replacement Battery</h4>
-                        <p class="text-gray-400 text-xs leading-relaxed">High capacity lithium-ion battery replacement for Dell, HP, Lenovo & Apple MacBooks.</p>
-                        <div class="flex items-baseline gap-3">
-                            <span class="text-2xl font-black text-amber-400">$59</span>
-                            <span class="text-sm text-gray-500 line-through">$99</span>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 mb-1">Upload CV / Resume (PDF / Doc)</label>
+                            <input type="file" id="career-cv" accept=".pdf,.doc,.docx" required class="w-full bg-gray-900 border border-gray-700 rounded-xl p-2 text-xs text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-cyan-500 file:text-black hover:file:bg-cyan-400">
                         </div>
                     </div>
-                    <div class="p-6 pt-0">
-                        <button onclick="switchView('user')" class="w-full py-3 rounded-xl bg-amber-500 text-black font-bold text-sm hover:bg-amber-400 transition">Order Part</button>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 mb-1">Technical Skills & Expertise</label>
+                        <input type="text" id="career-skills" required class="w-full bg-gray-900 border border-gray-700 rounded-xl p-3 text-sm text-white focus:border-cyan-400 outline-none" placeholder="e.g. Motherboard repair, soldering, Apple Certified Mac technician">
                     </div>
-                </div>
+                    <button type="submit" class="w-full py-4 rounded-xl bg-cyan-500 text-black font-extrabold text-sm hover:bg-cyan-400 transition shadow-lg shadow-cyan-500/25">
+                        Submit Career Application & CV
+                    </button>
+                </form>
             </div>
         </section>
     </div>
@@ -297,7 +286,6 @@
                                 <option value="Battery">Battery Replacement</option>
                                 <option value="RAM">RAM Upgrade</option>
                                 <option value="SSD">SSD Storage</option>
-                                <option value="Other Hardware">Other Hardware</option>
                             </select>
                         </div>
                     </div>
@@ -333,8 +321,8 @@
                 <div class="p-4 rounded-xl bg-gray-900/90 border border-amber-500/30 space-y-3">
                     <h4 class="text-xs font-bold text-amber-400 uppercase tracking-widest"><i class="fa-solid fa-credit-card mr-1"></i> Secure Checkout</h4>
                     <div class="flex justify-between text-xs">
-                        <span>Service & Inspection Fee:</span>
-                        <span class="font-bold text-white">$49.00</span>
+                        <span>Cart Total / Service Fee:</span>
+                        <span id="cart-total-display" class="font-bold text-white">$49.00</span>
                     </div>
                     <select id="payment-method" class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-xs text-white">
                         <option value="Card">Credit / Debit Card</option>
@@ -369,8 +357,8 @@
                         <p class="font-bold text-amber-400">Ticket #EL-849201 (Hardware - Motherboard)</p>
                         <p class="text-gray-300">Customer: Alexander Wright | Address: 742 Evergreen Terrace</p>
                         <div class="flex gap-2 pt-2">
-                            <button onclick="acceptJob('EL-849201')" class="px-3 py-1.5 bg-emerald-500 text-black font-bold rounded">Accept Job</button>
-                            <button onclick="startNavigation('EL-849201')" class="px-3 py-1.5 bg-cyan-500 text-black font-bold rounded">Start Navigation / On The Way</button>
+                            <button onclick="alert('Job accepted! GPS tracking started.')" class="px-3 py-1.5 bg-emerald-500 text-black font-bold rounded">Accept Job</button>
+                            <button onclick="alert('Navigation started. Broadcasting GPS coordinates.')" class="px-3 py-1.5 bg-cyan-500 text-black font-bold rounded">Start Navigation / On The Way</button>
                         </div>
                     </div>
                 </div>
@@ -385,62 +373,6 @@
                     <p>Broadcast Status: <span id="gps-status" class="text-emerald-400 font-bold">Active Stream</span></p>
                 </div>
                 <button onclick="triggerGpsBroadcast()" class="w-full py-3 bg-amber-500 text-black font-extrabold text-xs rounded-xl hover:bg-amber-400 transition">Simulate GPS Movement Step</button>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- ================= VIEW 4: ADMIN PORTAL ================= -->
-    <div id="view-admin" class="view-section hidden py-12 px-4 max-w-7xl mx-auto space-y-8">
-        <div class="glass-panel p-6 rounded-2xl flex justify-between items-center">
-            <div>
-                <span class="text-xs font-bold text-amber-400 uppercase tracking-widest">Secure Restricted Management Portal</span>
-                <h2 class="text-2xl font-extrabold">Admin Command Center</h2>
-            </div>
-            <button onclick="switchView('home')" class="px-4 py-2 bg-gray-900 text-gray-400 font-bold text-xs rounded-xl">Exit Admin</button>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-2 glass-panel p-6 rounded-3xl space-y-6">
-                <h3 class="text-lg font-extrabold text-amber-400">User & Technician Approval Queue</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs">
-                        <thead>
-                            <tr class="border-b border-gray-800 text-gray-400">
-                                <th class="pb-3">Name & Email</th>
-                                <th class="pb-3">Role</th>
-                                <th class="pb-3">Status</th>
-                                <th class="pb-3 text-right">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-user-table" class="divide-y divide-gray-800">
-                            <tr>
-                                <td class="py-3 font-bold">Pawan Sharma <br><span class="text-gray-500 font-normal">pawan@eloance.tech</span></td>
-                                <td>Technician</td>
-                                <td><span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 font-bold">Pending</span></td>
-                                <td class="text-right space-x-2">
-                                    <button onclick="approveUserEntity('Technician')" class="px-2.5 py-1 bg-emerald-500 text-black font-bold rounded">Approve</button>
-                                    <button onclick="rejectUserEntity('Technician')" class="px-2.5 py-1 bg-rose-500 text-white font-bold rounded">Reject</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="glass-panel p-6 rounded-3xl space-y-6">
-                <h3 class="text-lg font-extrabold text-cyan-400">Service Tickets & Assignment</h3>
-                <div class="space-y-3" id="admin-tickets-queue">
-                    <div class="p-3 bg-gray-900 rounded-xl text-xs space-y-2 border border-cyan-500/30">
-                        <p class="font-bold text-white">#EL-849201 - Hardware (Motherboard)</p>
-                        <p class="text-gray-400">Customer: Alexander Wright</p>
-                        <select class="w-full bg-gray-800 text-xs p-1.5 rounded text-white border border-gray-700">
-                            <option>Assign Technician: Pawan S.</option>
-                            <option>Assign Technician: Rohit M.</option>
-                        </select>
-                        <button onclick="alert('Technician successfully assigned! Job dispatched.')" class="w-full py-1.5 bg-amber-500 text-black font-bold rounded">Confirm Assignment</button>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -502,6 +434,54 @@
             }
         }
 
+        // Load Zomato-style Store Catalog from MongoDB Backend
+        async function loadStoreProducts() {
+            try {
+                const res = await fetch('/api/products');
+                const products = await res.json();
+                const container = document.getElementById('dynamic-store-catalog');
+                if(!container) return;
+                container.innerHTML = '';
+
+                products.forEach(p => {
+                    container.innerHTML += `
+                        <div class="glass-panel rounded-2xl overflow-hidden hover:border-amber-500/50 transition group flex flex-col justify-between">
+                            <div class="relative h-48 overflow-hidden bg-gray-900">
+                                <img src="${p.image_url}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-amber-500 text-black text-xs font-black shadow">${p.badge || 'Offer'}</span>
+                            </div>
+                            <div class="p-6 space-y-3">
+                                <h4 class="text-xl font-bold">${p.title}</h4>
+                                <p class="text-gray-400 text-xs leading-relaxed">${p.description || ''}</p>
+                                <div class="flex items-baseline gap-3">
+                                    <span class="text-2xl font-black text-amber-400">$${p.price}</span>
+                                    ${p.original_price ? `<span class="text-sm text-gray-500 line-through">$${p.original_price}</span>` : ''}
+                                </div>
+                            </div>
+                            <div class="p-6 pt-0">
+                                <button onclick="addToCart('${p.title}', ${p.price})" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-extrabold text-sm hover:scale-[1.02] transition shadow-lg shadow-amber-500/20">
+                                    <i class="fa-solid fa-cart-shopping mr-2"></i> Add to Cart & 20-Min Drop
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (e) {
+                console.error('Failed to load store catalog', e);
+            }
+        }
+
+        let cartTotal = 49;
+        function addToCart(title, price) {
+            cartTotal += price;
+            document.getElementById('cart-total-display').innerText = '$' + cartTotal.toFixed(2);
+            alert(`"${title}" ($${price}) added to your cart!\nTotal amount updated. Proceed to User Portal to checkout.`);
+            switchView('user');
+        }
+
+        window.addEventListener('DOMContentLoaded', loadStoreProducts);
+
+        // AI Diagnostic Classifier
         function runAiAnalysis() {
             const query = document.getElementById('ai-user-query').value.trim().toLowerCase();
             const output = document.getElementById('ai-output-box');
@@ -525,6 +505,34 @@
                     <button onclick="switchView('user')" class="mt-2 px-4 py-2 bg-amber-500 text-black font-bold text-xs rounded-xl">Proceed to Book ${type} Repair</button>
                 `;
             }, 1000);
+        }
+
+        // Technician Career Application
+        async function submitTechnicianCareer(e) {
+            e.preventDefault();
+            const name = document.getElementById('career-name').value;
+            const phone = document.getElementById('career-phone').value;
+            const email = document.getElementById('career-email').value;
+            const skills = document.getElementById('career-skills').value.split(',');
+            const cvFile = document.getElementById('career-cv').files[0]?.name || 'resume.pdf';
+
+            try {
+                const res = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name, phone, email, password: 'TempPassword123!', role: 'technician', skills, cv_filename: cvFile, experience: '3+ Years', service_area: 'Zone A'
+                    })
+                });
+                const data = await res.json();
+                if(res.ok) {
+                    alert('Career application and CV submitted successfully!\nYour account is currently Pending admin approval.');
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch(err) {
+                console.error(err);
+            }
         }
 
         function updateCategoryOptions() {
@@ -556,7 +564,7 @@
             }).addTo(map);
 
             customerMarker = L.marker([21.1458, 79.0882]).addTo(map).bindPopup('Customer Location').openPopup();
-            techMarker = L.marker([21.1558, 79.0982]).addTo(map).bindPopup('Technician Pawan S. (On The Way)');
+            techMarker = L.marker([21.1558, 79.0982]).addTo(map).bindPopup('Technician Pawan S. (Robot Bike #04)');
         }
 
         function submitServiceRequest(e) {
@@ -570,7 +578,7 @@
 
         function processSecurePayment() {
             const method = document.getElementById('payment-method').value;
-            alert(`Payment of $49.00 processed successfully via ${method}!\nTransaction ID: TXN-${Math.floor(10000000 + Math.random()*90000000)}`);
+            alert(`Payment processed successfully via ${method}!\nTransaction ID: TXN-${Math.floor(10000000 + Math.random()*90000000)}`);
         }
 
         function openLoginModal(role) {
