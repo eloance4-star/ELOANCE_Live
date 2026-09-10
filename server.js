@@ -220,7 +220,16 @@ io.on('connection', (socket) => {
 });
 
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => console.log(`ELOANCE production server running on port ${PORT}`));
-server.listen(PORT, () => {
-  console.log(`ELOANCE Production Server running on port ${PORT}`);
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`ELOANCE production server running on port ${PORT}`);
+}).on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`Port ${PORT} is already in use. Retrying...`);
+    setTimeout(() => {
+      server.close();
+      server.listen(PORT);
+    }, 1000);
+  } else {
+    console.error(err);
+  }
 });
