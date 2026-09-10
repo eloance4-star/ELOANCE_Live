@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ELOANCE | Horizon Admin Portal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: 'DM Sans', sans-serif; background: #0B1437; color: #fff; margin: 0; display: flex; height: 100vh; overflow: hidden; }
+    .sidebar { width: 260px; background: #111C44; border-right: 1px solid rgba(255,255,255,0.08); padding: 30px 20px; display: flex; flex-direction: column; }
+    .brand { font-size: 22px; font-weight: 800; color: #D4AF37; margin-bottom: 40px; font-family: 'Orbitron', sans-serif; }
+    .nav-item { padding: 12px 16px; border-radius: 12px; color: #8F9BBA; font-weight: 700; cursor: pointer; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+    .nav-item.active, .nav-item:hover { background: rgba(67,24,255,0.15); color: #4318FF; }
+    .main { flex: 1; padding: 30px 40px; overflow-y: auto; background: #0B1437; }
+    .card { background: #111C44; border-radius: 20px; padding: 24px; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.06); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { text-align: left; color: #A3AED0; padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 12px; text-transform: uppercase; }
+    td { padding: 14px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); font-weight: 600; }
+    .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; background: rgba(5,205,153,0.15); color: #05CD99; }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="brand"><i class="fa-solid fa-shield-halved"></i> ELOANCE HZ</div>
+    <div class="nav-item active"><i class="fa-solid fa-chart-pie"></i> Admin Dashboard</div>
+    <div class="nav-item" style="margin-top:auto;"><a href="/" style="color:#A3AED0; text-decoration:none;"><i class="fa-solid fa-arrow-left"></i> Exit Portal</a></div>
+  </div>
+
+  <div class="main">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+      <h2>Horizon Secure Admin Command Center</h2>
+      <span style="background:rgba(212,175,55,0.15); color:#D4AF37; padding:6px 14px; border-radius:20px; font-weight:700;">🛡️ JWT Protected & Active</span>
+    </div>
+
+    <div class="card">
+      <h3>Active Technician Fleet Telemetry</h3>
+      <table>
+        <thead>
+          <tr><th>Technician ID</th><th>Name</th><th>Vehicle</th><th>GPS Coordinates</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>#T01</td><td>Pawan S.</td><td>Bike #04</td><td id="live-coords">Lat: 28.6139, Lng: 77.2090</td><td><span class="badge">On The Way</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    socket.on('live_location_update', (data) => {
+      document.getElementById('live-coords').innerText = `Lat: ${data.latitude.toFixed(4)}, Lng: ${data.longitude.toFixed(4)}`;
+    });
+  </script>
+</body>
+</html>
