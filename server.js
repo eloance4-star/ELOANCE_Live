@@ -19,7 +19,10 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/eloance';
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log('Connected to MongoDB Atlas successfully'))
-  .catch(err => console.error('MongoDB connection error:', err));
+  .catch(err => {
+    console.error('MongoDB connection error:', err.messege);
+    process.exit(1); // Exits cleanly so Render can log the error and retry
+  });
 
 // --- MONGODB SCHEMAS ---
 const productSchema = new mongoose.Schema({
